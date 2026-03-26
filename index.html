@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RBM Lead Funnel Form</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #0b5cff;
+      --primary-dark: #0842b7;
+      --line: #dbe4f0;
+      --ok: #0f9d58;
+      --danger: #d93025;
+      --accent: #f59e0b;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 16px 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0b5cff, #0a2d85);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 26px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 28px rgba(11, 92, 255, 0.25);
+    }
+
+    .tag {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #dbe7ff;
+      border-radius: 999px;
+      font-size: 12px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      letter-spacing: .03em;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #d6e3ff;
+      max-width: 760px;
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    }
+
+    .progress-wrap {
+      margin-bottom: 14px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #e9eef8;
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #4a82ff);
+      transition: width .25s ease;
+    }
+
+    .step {
+      display: none;
+      animation: fade .2s ease;
+    }
+
+    .step.active { display: block; }
+
+    @keyframes fade {
+      from { opacity: .7; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .sub {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 650px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #cfd9ea;
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      color: #0f172a;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #86a9ff;
+      box-shadow: 0 0 0 3px rgba(11, 92, 255, .15);
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 650px) {
+      .option-grid { grid-template-columns: 1fr; }
+    }
+
+    .option {
+      border: 1px solid #ccd8ee;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      background: #fff;
+      transition: border .2s ease, box-shadow .2s ease, transform .1s ease;
+    }
+
+    .option:hover {
+      border-color: #8baeff;
+      box-shadow: 0 6px 14px rgba(47, 95, 214, .1);
+      transform: translateY(-1px);
+    }
+
+    .option input {
+      width: auto;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .option strong { display: block; margin-bottom: 4px; }
+    .option small { color: var(--muted); line-height: 1.35; }
+
+    .actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    .btn-secondary {
+      background: #e6edf9;
+      color: #29426f;
+    }
+
+    .btn-secondary:hover { background: #d8e3f6; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      margin-left: auto;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn[disabled] {
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 16px;
+    }
+
+    .side h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: #f9fbff;
+    }
+
+    .kpi b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .kpi span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    ul.bullets {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #1e293b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 14px;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fffbeb;
+      border: 1px solid #fde9b7;
+      font-size: 13px;
+      color: #7c5a00;
+    }
+
+    .success {
+      display: none;
+      border-radius: 12px;
+      border: 1px solid #bde9cd;
+      background: #ecfdf3;
+      color: #0f5132;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .success.show { display: block; }
+
+    .footer {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="tag">6 WEEKS VIRTUAL MASTERCLASS</span>
+      <h1>Real Estate Business Masterclass Lead Funnel</h1>
+      <p>
+        Learn the 12 major types of real estate and how to raise investment.
+        Complete this quick form to secure your spot and get contacted with next steps.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="stepText">Step 1 of 4</span>
+            <span>~2 mins</span>
+          </div>
+          <div class="progress"><span id="progressBar"></span></div>
+        </div>
+
+        <form id="funnelForm" novalidate>
+          <div class="step active" data-step="1">
+            <h2>Your Basic Details</h2>
+            <p class="sub">Let’s start with your contact details so we can reserve your masterclass slot.</p>
+
+            <div class="form-row">
+              <div>
+                <label for="firstName">First Name *</label>
+                <input id="firstName" name="firstName" type="text" required />
+              </div>
+              <div>
+                <label for="lastName">Last Name *</label>
+                <input id="lastName" name="lastName" type="text" required />
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-top: 12px;">
+              <div>
+                <label for="email">Email Address *</label>
+                <input id="email" name="email" type="email" required />
+              </div>
+              <div>
+                <label for="phone">Phone Number *</label>
+                <input id="phone" name="phone" type="tel" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="step" data-step="2">
+            <h2>Profile & Intent</h2>
+            <p class="sub">Help us understand your current role and your goal for joining the RBM program.</p>
+
+            <div class="form-row">
+              <div>
+                <label for="occupation">Occupation / Role</label>
+                <input id="occupation" name="occupation" type="text" placeholder="e.g. Entrepreneur, Realtor" />
+              </div>
+              <div>
+                <label for="experience">Real Estate Experience Level *</label>
+                <select id="experience" name="experience" required>
+                  <option value="">Select level</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <label for="goal">Main Goal for Joining *</label>
+              <textarea id="goal" name="goal" rows="3" required placeholder="What do you want to achieve from this masterclass?"></textarea>
+            </div>
+          </div>
+
+          <div class="step" data-step="3">
+            <h2>Select Package</h2>
+            <p class="sub">Choose your preferred registration option for this 6-week virtual masterclass.</p>
+
+            <div class="option-grid">
+              <label class="option">
+                <input type="radio" name="package" value="Individual - ₦500,000 Early Bird" required />
+                <strong>Individual - ₦500,000</strong>
+                <small>50% off from ₦1,000,000. Full access + certificate.</small>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="package" value="Couple - ₦750,000 Early Bird" required />
+                <strong>Couple - ₦750,000</strong>
+                <small>50% off from ₦1,500,000. Full access + 2 certificates.</small>
+              </label>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <label for="budget">Are you ready to proceed with payment within 7 days? *</label>
+              <select id="budget" name="budget" required>
+                <option value="">Select an option</option>
+                <option>Yes, I am ready</option>
+                <option>Maybe, I need more details</option>
+                <option>No, I need more time</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="step" data-step="4">
+            <h2>Final Questions</h2>
+            <p class="sub">Last step. This helps us understand where you heard about the program and how best to support you.</p>
+
+            <div class="form-row">
+              <div>
+                <label for="source">How did you hear about us? *</label>
+                <select id="source" name="source" required>
+                  <option value="">Select source</option>
+                  <option>Social Media</option>
+                  <option>Friend / Referral</option>
+                  <option>Email</option>
+                  <option>Website</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="preferredContact">Preferred Contact Method *</label>
+                <select id="preferredContact" name="preferredContact" required>
+                  <option value="">Select option</option>
+                  <option>Phone Call</option>
+                  <option>WhatsApp</option>
+                  <option>Email</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <label>
+                <input id="consent" name="consent" type="checkbox" required style="width: auto; margin-right: 8px;" />
+                I agree to be contacted about this program. *
+              </label>
+            </div>
+          </div>
+
+          <p class="error" id="errorText"></p>
+
+          <div class="actions">
+            <button type="button" class="btn btn-secondary" id="prevBtn">Back</button>
+            <button type="button" class="btn btn-primary" id="nextBtn">Continue</button>
+          </div>
+        </form>
+
+        <div class="success" id="successBox">
+          <strong>You're Registered!</strong><br />
+          Thanks for signing up for the Real Estate Business Masterclass. Our team will contact you shortly with payment and onboarding details.
+        </div>
+      </section>
+
+      <aside class="card side">
+        <h3>Program Snapshot</h3>
+        <p class="sub">
+          Structured by Dr. Stephen Akintayo to help beginners and professionals
+          understand the real estate landscape and investment strategy.
+        </p>
+
+        <div class="kpis">
+          <div class="kpi"><b>6 Weeks</b><span>Virtual Program</span></div>
+          <div class="kpi"><b>8AM - 12PM</b><span>Saturdays</span></div>
+          <div class="kpi"><b>12 Sectors</b><span>Real Estate Types</span></div>
+          <div class="kpi"><b>Certification</b><span>Upon Completion</span></div>
+        </div>
+
+        <ul class="bullets">
+          <li>Residential, Commercial, Retail, Land Banking, and more.</li>
+          <li>Learn practical approaches to raising investment.</li>
+          <li>Ideal for beginners, entrepreneurs, realtors, and investors.</li>
+        </ul>
+
+        <div class="note">
+          Early bird offer is limited. Complete your registration now to lock in the discounted price.
+        </div>
+      </aside>
+    </div>
+
+    <p class="footer">
+      RBM Leads Funnel Form • Designed for program registration and lead qualification.
+    </p>
+  </div>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const stepText = document.getElementById("stepText");
+    const progressBar = document.getElementById("progressBar");
+    const errorText = document.getElementById("errorText");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const form = document.getElementById("funnelForm");
+    const successBox = document.getElementById("successBox");
+    let current = 0;
+
+    function updateStepUI() {
+      steps.forEach((step, index) => {
+        step.classList.toggle("active", index === current);
+      });
+
+      const stepNumber = current + 1;
+      stepText.textContent = "Step " + stepNumber + " of " + steps.length;
+      progressBar.style.width = ((stepNumber / steps.length) * 100) + "%";
+
+      prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+      nextBtn.textContent = current === steps.length - 1 ? "Submit Registration" : "Continue";
+      errorText.textContent = "";
+    }
+
+    function getCurrentStepInputs() {
+      return Array.from(steps[current].querySelectorAll("input, select, textarea"));
+    }
+
+    function validateCurrentStep() {
+      const inputs = getCurrentStepInputs();
+      for (const field of inputs) {
+        if (!field.checkValidity()) {
+          if (field.type === "radio") {
+            errorText.textContent = "Please select a package option to continue.";
+          } else if (field.type === "checkbox") {
+            errorText.textContent = "Please accept the contact consent to continue.";
+          } else {
+            errorText.textContent = "Please complete all required fields before continuing.";
+          }
+          field.focus();
+          return false;
+        }
+      }
+      errorText.textContent = "";
+      return true;
+    }
+
+    async function submitToFormspree() {
+      const formData = new FormData(form);
+      formData.set("consent", document.getElementById("consent").checked ? "Yes" : "No");
+      formData.set("submittedAt", new Date().toISOString());
+      formData.set("_subject", "New RBM Lead Submission");
+
+      const response = await fetch("https://formspree.io/f/maqlyran", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to submit form right now.");
+      }
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (current > 0) {
+        current -= 1;
+        updateStepUI();
+      }
+    });
+
+    nextBtn.addEventListener("click", async () => {
+      if (!validateCurrentStep()) return;
+
+      if (current < steps.length - 1) {
+        current += 1;
+        updateStepUI();
+        return;
+      }
+
+      nextBtn.disabled = true;
+      prevBtn.disabled = true;
+      nextBtn.textContent = "Submitting...";
+      errorText.textContent = "";
+
+      try {
+        await submitToFormspree();
+        form.style.display = "none";
+        successBox.classList.add("show");
+        stepText.textContent = "Completed";
+        progressBar.style.width = "100%";
+      } catch (error) {
+        errorText.textContent = "Submission failed. Please try again in a moment.";
+        nextBtn.disabled = false;
+        prevBtn.disabled = false;
+        nextBtn.textContent = "Submit Registration";
+      }
+    });
+
+    updateStepUI();
+  </script>
+</body>
+</html>
